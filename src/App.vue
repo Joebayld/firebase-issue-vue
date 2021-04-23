@@ -1,15 +1,40 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    This test app should be updating the root field <strong>test</strong> between true and false every second.
+    <br>
+    <br>
+    Current value: <strong>{{ testValue }}</strong>
+
+    <div v-if="error">
+      <h3>Error</h3>
+      {{ error }}
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { database } from './firebase'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() { 
+    return { 
+      testValue: false, 
+      error: null
+    }
+  },
+  created() {
+   const self = this
+    database.ref('test').on('value', snapshot => {
+      console.log(snapshot.val())
+    })
+    setInterval(function () {
+      database.ref('test').set(self.testValue).catch(error => {
+        self.error = error
+      })
+      self.testValue = !self.testValue
+    }, 1000)
+  
   }
 }
 </script>

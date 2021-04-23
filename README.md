@@ -6,8 +6,11 @@ npm install
 ```
 
 ### Compiles and hot-reloads for development
+
+You need to run both these scripts. 
 ```
 npm run serve
+npm run start-emulator
 ```
 
 ### Compiles and minifies for production
